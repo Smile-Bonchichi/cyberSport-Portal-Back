@@ -10,5 +10,5 @@ public interface GameService {
 
     GameDtoResponse createUpdateGame(GameDtoRequest gameDtoRequest);
 
-    GameDtoResponse deleteUpdateGame(GameDtoRequest gameDtoRequest);
+    GameDtoResponse deleteGameByName(GameDtoRequest gameDtoRequest);
 }

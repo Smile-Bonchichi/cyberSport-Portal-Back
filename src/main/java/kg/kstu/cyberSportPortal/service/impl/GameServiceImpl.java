@@ -7,6 +7,7 @@ import kg.kstu.cyberSportPortal.entity.Game;
 import kg.kstu.cyberSportPortal.entity.Image;
 import kg.kstu.cyberSportPortal.exception.GameNotFoundException;
 import kg.kstu.cyberSportPortal.exception.ImageSaveException;
+import kg.kstu.cyberSportPortal.mapper.CategoryMapper;
 import kg.kstu.cyberSportPortal.mapper.GameMapper;
 import kg.kstu.cyberSportPortal.service.GameService;
 import kg.kstu.cyberSportPortal.service.database.DescriptionDataBaseService;
@@ -25,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -54,9 +56,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public List<GameDtoResponse> getAllGames() {
-        List<Game> games = gameDataBaseService.findAll();
-
-        return null;
+        return getGameList();
     }
 
     @Override
@@ -100,7 +100,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public GameDtoResponse deleteUpdateGame(GameDtoRequest gameDtoRequest) {
+    public GameDtoResponse deleteGameByName(GameDtoRequest gameDtoRequest) {
         Game game = gameDataBaseService.findGameByName(gameDtoRequest.getGameName());
 
         if (game == null) {
@@ -126,5 +126,26 @@ public class GameServiceImpl implements GameService {
         }
 
         return imagesDataBase;
+    }
+
+    private List<GameDtoResponse> getGameList() {
+        List<Game> games = gameDataBaseService.findAll();
+        List<GameDtoResponse> gameDtoResponses = new ArrayList<>();
+
+        for (Game game : games) {
+            gameDtoResponses.add(
+                    GameDtoResponse.builder()
+                            .gameName(game.getName())
+                            .description(game.getDescription().getDescription())
+                            .rating(game.getRating())
+                            .imagesUrl(game.getImage().stream()
+                                    .map(Image::getUrl)
+                                    .collect(Collectors.toList()))
+                            .categories(CategoryMapper.INSTANCE.toCategoriesDto(game.getCategories()))
+                            .build()
+            );
+        }
+
+        return gameDtoResponses;
     }
 }

@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/game/")
@@ -26,10 +27,10 @@ public class GameController {
     }
 
     @GetMapping("get-all-game")
-    public ResponseEntity<GameDtoResponse> getAllGames() {
+    public ResponseEntity<List<GameDtoResponse>> getAllGames() {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body();
+                .body(gameService.getAllGames());
     }
 
     @PostMapping("create-update-game")
@@ -43,6 +44,6 @@ public class GameController {
     public ResponseEntity<GameDtoResponse> deleteGame(@Valid @RequestBody GameDtoRequest gameDtoRequest) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(gameService.deleteUpdateGame(gameDtoRequest));
+                .body(gameService.deleteGameByName(gameDtoRequest));
     }
 }

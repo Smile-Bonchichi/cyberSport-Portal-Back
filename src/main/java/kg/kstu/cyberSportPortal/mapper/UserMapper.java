@@ -11,6 +11,4 @@ public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
     User toUserEntity(UserDtoRequest userDtoRequest);
-
-    User toUserEntity(UserSignInDtoRequest userSignInDtoRequest);
 }

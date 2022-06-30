@@ -55,9 +55,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/user-data/write-profile").authenticated()
 
                 .antMatchers(HttpMethod.GET, "/api/category/get-category").authenticated()
+                .antMatchers(HttpMethod.GET, "/api/game/get-all-game").authenticated()
 
                 .antMatchers(HttpMethod.POST, "/api/category/*").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/api/category/*").hasRole("ADMIN")
+
+                .antMatchers(HttpMethod.POST, "/api/game/*").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/api/game/*").hasRole("ADMIN")
 
                 .and()
                 .httpBasic();

@@ -1,10 +1,10 @@
 package kg.kstu.cyberSportPortal.service.impl;
 
 import kg.kstu.cyberSportPortal.dto.request.userData.UserDataDtoRequest;
-import kg.kstu.cyberSportPortal.dto.response.category.CategoryDtoResponse;
 import kg.kstu.cyberSportPortal.dto.response.userData.UserDataDtoResponse;
 import kg.kstu.cyberSportPortal.entity.*;
 import kg.kstu.cyberSportPortal.exception.ImageSaveException;
+import kg.kstu.cyberSportPortal.mapper.CategoryMapper;
 import kg.kstu.cyberSportPortal.service.UserDataService;
 import kg.kstu.cyberSportPortal.service.database.*;
 import kg.kstu.cyberSportPortal.service.util.CategoryParserService;
@@ -17,9 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -88,20 +85,10 @@ public class UserDataServiceImpl implements UserDataService {
         userData.setCategories(categoryParserService.addUpdateCategory(userDataDtoRequest.getCategoryId()));
         userDataDataBaseService.saveOrUpdate(userData);
 
-        List<CategoryDtoResponse> categoryDtoResponses = new ArrayList<>();
-
-        for (int i = 0; i < userData.getCategories().size(); i++) {
-            categoryDtoResponses.add(
-                    CategoryDtoResponse.builder()
-                            .name(userData.getCategories().get(i).getName())
-                            .build()
-            );
-        }
-
         return UserDataDtoResponse.builder()
-                .categories(categoryDtoResponses)
+                .categories(CategoryMapper.INSTANCE.toCategoriesDto(userData.getCategories()))
                 .newDescription(userData.getDescription().getDescription())
-                .newImageUrl(userData.getImage().getUrl())
+                .newImageUrl(userData.getImage() != null ? userData.getImage().getUrl() : null)
                 .build();
     }
 }

@@ -20,8 +20,9 @@ public class CategoryDtoRequest {
     @Size(min = 5, max = 50)
     String name;
 
+    @Size(min = 5, max = 50)
+    String newName;
+
     @NotNull
-    @NotEmpty
-    @Size(min = 4, max = 10)
     CategoryType categoryType;
 }

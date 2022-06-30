@@ -28,17 +28,17 @@ public class ApplicationStartRunner implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
-        descriptionDataBaseService.saveOrUpdate(
-                Description.builder()
-                        .description("")
-                        .build()
-        );
-
-        saveGamerCategory();
-        saveGameCategory();
-        saveNewsCategory();
-        saveTeamsCategory();
+    public void run(String... args) {
+//        descriptionDataBaseService.saveOrUpdate(
+//                Description.builder()
+//                        .description("")
+//                        .build()
+//        );
+//
+//        saveGamerCategory();
+//        saveGameCategory();
+//        saveNewsCategory();
+//        saveTeamsCategory();
     }
 
     private void saveGamerCategory() {

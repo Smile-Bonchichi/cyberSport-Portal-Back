@@ -31,8 +31,9 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<CategoryDtoResponse> getAllCategoryNameByType(String type) {
         try {
-            CategoryType categoryType = CategoryType.valueOf(type);
-            return CategoryMapper.INSTANCE.toCategoriesDto(categoryDataBaseService.findAllByType(categoryType.name()));
+            return CategoryMapper.INSTANCE.toCategoriesDto(
+                    categoryDataBaseService.findAllByType(CategoryType.valueOf(type).name())
+            );
         } catch (Exception e) {
             throw new CategoryNotFoundException("Такого типа категории нет", HttpStatus.BAD_REQUEST);
         }
@@ -49,14 +50,17 @@ public class CategoryServiceImpl implements CategoryService {
 
             if (category == null) {
                 return CategoryMapper.INSTANCE.toCategoryDto(
-                        categoryDataBaseService.saveOrUpdate(Category.builder()
-                                .name(categoryDtoRequest.getName())
-                                .categoryType(categoryDtoRequest.getCategoryType())
-                                .build())
+                        categoryDataBaseService.saveOrUpdate(
+                                Category.builder()
+                                        .name(categoryDtoRequest.getName())
+                                        .categoryType(categoryDtoRequest.getCategoryType())
+                                        .build()
+                        )
                 );
             } else {
-                category.setName(categoryDtoRequest.getName());
-                return CategoryMapper.INSTANCE.toCategoryDto(category);
+                category.setName(categoryDtoRequest.getNewName());
+
+                return CategoryMapper.INSTANCE.toCategoryDto(categoryDataBaseService.saveOrUpdate(category));
             }
         } catch (Exception e) {
             throw new CategoryNotFoundException("Такого типа категории нет", HttpStatus.BAD_REQUEST);

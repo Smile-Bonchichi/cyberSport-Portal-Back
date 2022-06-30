@@ -21,7 +21,6 @@ public class UserDtoRequest {
     @Size(min = 5, max = 50)
     String password;
 
-    @NotEmpty
     @Email
     @Size(min = 5)
     String email;
