@@ -21,7 +21,7 @@ public class Game extends BaseEntity {
     @Column(name = "game_name", unique = true, nullable = false, length = 30)
     String name;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "description_id", nullable = false, unique = true)
     Description description;
 

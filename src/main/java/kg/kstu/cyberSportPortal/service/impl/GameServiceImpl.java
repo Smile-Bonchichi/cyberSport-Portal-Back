@@ -70,14 +70,15 @@ public class GameServiceImpl implements GameService {
                             .build()
             );
 
-            List<Image> images = addImage(gameDtoRequest.getImages());
-
             game = gameDataBaseService.saveOrUpdate(
                     Game.builder()
                             .name(gameDtoRequest.getGameName())
                             .description(description)
                             .rating(gameDtoRequest.getRating())
-                            .image(imageDataBaseService.saveAll(images))
+                            .image(gameDtoRequest.getImages() != null ?
+                                    imageDataBaseService.saveAll(addImage(gameDtoRequest.getImages()))
+                                    : null
+                            )
                             .categories(categoryParserService.addUpdateCategory(gameDtoRequest.getCategoryIds()))
                             .build()
             );
